@@ -1,0 +1,33 @@
+{
+  "name": "visualization-gpt",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "NODE_OPTIONS='--max-http-header-size=80000' next dev",
+    "build": "next build",
+    "start": "NODE_OPTIONS='--max-http-header-size=80000' next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@types/node": "18.15.11",
+    "@types/react": "18.0.35",
+    "@types/react-dom": "18.0.11",
+    "autoprefixer": "10.4.14",
+    "classnames": "^2.3.2",
+    "eslint": "8.38.0",
+    "eslint-config-next": "13.3.0",
+    "next": "13.3.0",
+    "openai": "^3.2.1",
+    "postcss": "8.4.21",
+    "qs": "^6.11.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-textarea-autosize": "^8.4.1",
+    "tailwindcss": "3.3.1",
+    "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@types/qs": "^6.9.7",
+    "@types/react-textarea-autosize": "^8.0.0"
+  }
+}
