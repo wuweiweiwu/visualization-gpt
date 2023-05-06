@@ -26,7 +26,7 @@ export default function Home() {
   ]);
 
   return (
-    <main className="p-24 bg-slate-50 min-h-screen">
+    <main className="p-24 min-h-screen">
       <div className="-ml-6">
         {forest.map((tree) => (
           <Cell
@@ -234,12 +234,7 @@ function Cell({ tree, setTree, onDelete, transcript }: CellProps) {
       <>
         {surrounding[0]}
 
-        {spec && (
-          <VegaEmbed
-            id={`chart-${Math.round(Math.random() * 100)}`}
-            spec={spec}
-          />
-        )}
+        {spec && <VegaEmbed id={`chart-${tree.id}`} spec={spec} />}
 
         {surrounding[1]}
       </>
