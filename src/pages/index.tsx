@@ -25,24 +25,6 @@ export default function Home() {
     },
   ]);
 
-  // when pasting into the window, set the forest to that json
-  useEffect(() => {
-    const handlePaste = (e: ClipboardEvent) => {
-      const json = e.clipboardData?.getData("text/plain");
-      if (json) {
-        try {
-          const newForest = JSON.parse(json);
-          setForest(newForest);
-        } catch (e) {
-          console.error(e);
-        }
-      }
-    };
-
-    window.addEventListener("paste", handlePaste);
-    return () => window.removeEventListener("paste", handlePaste);
-  }, []);
-
   return (
     <main className="p-24 bg-slate-50 min-h-screen">
       <div className="-ml-6">
@@ -380,7 +362,7 @@ function Cell({ tree, setTree, onDelete, transcript }: CellProps) {
                 }));
               }}
               onDelete={() => {
-                setTree((callback) => ({
+                setTree((tree) => ({
                   ...tree,
                   children: tree.children.filter((c) => c.id !== child.id),
                 }));
