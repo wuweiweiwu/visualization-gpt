@@ -224,7 +224,7 @@ function Cell({ tree, setTree, onDelete, transcript }: CellProps) {
     let spec = null;
 
     try {
-      spec = JSON.parse(specString);
+      spec = JSON.parse(specString.replace(/(\r\n|\n|\r)/gm, ""));
     } catch (e) {
       console.error(e);
       return content;
@@ -283,9 +283,7 @@ function Cell({ tree, setTree, onDelete, transcript }: CellProps) {
             <div className="p-1 flex flex-col gap-4">
               {getNodes(
                 tree.content
-                  ? tree.content
-                      .replace(/(\r\n|\n|\r)/gm, "")
-                      .replace("```json", "```")
+                  ? tree.content.replace("```json", "```")
                   : "Thinking..."
               )}
             </div>
