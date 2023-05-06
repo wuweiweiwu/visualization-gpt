@@ -2,6 +2,7 @@ import classnames from "classnames";
 import qs from "qs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import TextareaAutosize from "react-textarea-autosize";
+import embed from "vega-embed";
 
 type Role = "assistant" | "user";
 
@@ -130,6 +131,14 @@ export default function Home() {
   );
 }
 
+const VegaEmbed = (props: { id: string; spec: any }) => {
+  useEffect(() => {
+    embed(`#${props.id}`, props.spec);
+  }, [props.id, props.spec]);
+
+  return <div id={props.id}></div>;
+};
+
 interface CellProps {
   tree: Tree;
   setTree: (callback: (tree: Tree) => Tree) => void;
@@ -253,6 +262,48 @@ function Cell({ tree, setTree, onDelete, transcript }: CellProps) {
     });
   }, [setTree, transcript]);
 
+  const getCodeBlockContents = (content: string) => {
+    const codeBlockRegex = /(?<=`{3})([\s\S]*?)(?=`{3})/g;
+    const codeBlockMatches = content.match(codeBlockRegex);
+
+    return codeBlockMatches?.[0];
+  };
+
+  const getNodes = (content: string) => {
+    const specString = getCodeBlockContents(content);
+    if (!specString) {
+      return content;
+    }
+
+    const surrounding = content
+      .split(specString)
+      .map((s) => s.replace("```", ""));
+
+    let spec = null;
+
+    try {
+      spec = JSON.parse(specString);
+    } catch (e) {
+      console.error(e);
+      return content;
+    }
+
+    return (
+      <>
+        {surrounding[0]}
+
+        {spec && (
+          <VegaEmbed
+            id={`chart-${Math.round(Math.random() * 100)}`}
+            spec={spec}
+          />
+        )}
+
+        {surrounding[1]}
+      </>
+    );
+  };
+
   return (
     <div className="w-full">
       <div className="mt-2 flex flex-row items-start gap-2">
@@ -292,12 +343,15 @@ function Cell({ tree, setTree, onDelete, transcript }: CellProps) {
               rows={1}
             />
           ) : (
-            <div
-              className="p-1 flex flex-col gap-4"
-              dangerouslySetInnerHTML={{
-                __html: tree.content ? tree.content : "Thinking...",
-              }}
-            />
+            <div className="p-1 flex flex-col gap-4">
+              {getNodes(
+                tree.content
+                  ? tree.content
+                      .replace(/(\r\n|\n|\r)/gm, "")
+                      .replace("```json", "```")
+                  : "Thinking..."
+              )}
+            </div>
           )}
 
           <div className="flex flex-row gap-2">

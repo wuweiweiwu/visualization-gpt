@@ -37,7 +37,7 @@ export default async function handler(
       messages: [
         {
           role: "system",
-          content: `You are a data visualization expert tasked with generating syntactically correct Vega-Lite specs that are best for visualizing the given data. Make sure that ALL axis titles are human-readable and not snake_case or camelCase. Write responses in markdown format.`,
+          content: `You are a data visualization expert tasked with generating syntactically correct Vega-Lite specs that are best for visualizing the given data. Make sure that ALL axis titles are human-readable and not snake_case or camelCase. Write responses in markdown format. In the markdown code block do not specify the language of the code block.`,
         },
         ...messages,
       ],
